@@ -14,7 +14,7 @@
   "keywords": [],
   "author": {
     "name": "'helineth'",
-    "email": "'amorimhelyneth@gmail.com'"
+    "email": "amorimhelyneth@gmail.com"
   },
   "license": "MIT",
   "devDependencies": {
@@ -30,6 +30,7 @@
     "@pandacss/dev": "^0.15.1",
     "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
+    "@types/simple-peer": "^9.11.6",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
@@ -41,6 +42,8 @@
     "fork-ts-checker-webpack-plugin": "^7.2.13",
     "mysql2": "^3.6.1",
     "node-loader": "^2.0.0",
+    "simple-peer": "^9.11.1",
+    "socket.io-client": "^4.7.2",
     "style-loader": "^3.0.0",
     "ts-loader": "^9.2.2",
     "ts-node": "^10.0.0",

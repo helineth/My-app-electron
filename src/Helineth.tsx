@@ -1,17 +1,18 @@
-import React, { useRef } from "react";
-import {  Stack, Heading, Box, FormLabel, Input, Select, Button } from '@chakra-ui/react'
+import React, { useEffect, useRef, useState } from "react";
+import { Stack, Heading, Box, FormLabel, Input, Select, Button } from '@chakra-ui/react'
 import { AlunoType } from "./AlunoType";
-import db from "./database/bd";
+import Peer from 'simple-peer';
+
 
 export const Helineth = () => {
   const refNomeAluno = useRef<HTMLInputElement>(null);
   const refDataNascimento = useRef<HTMLInputElement>(null);
   const refMorada = useRef<HTMLInputElement>(null);
   const refSexo = useRef<HTMLInputElement>(null);
+  const [peer, setPeer] = useState('');
 
 
-
- async function handleSubmit() {
+  async function handleSubmit() {
 
     const nomeAluno = refNomeAluno.current?.value as string
     const dataNascimento = refDataNascimento.current?.value as string
@@ -27,21 +28,55 @@ export const Helineth = () => {
       morada,
       sexo
     }
-   // Insere o aluno na tabela 'alunos' usando Dexie.js
-   await db.alunos.add(data);
 
 
-   // onSaveAluno(data)
+    const conn = this.state.peer.connect(this.state.friendId);
+    conn.on('open', () => {
+      const msgObj = {
+        remetente: this.state.myId,
+        mensagem: this.state.message
+      };
+      conn.send(msgObj);
+      this.setState({
+        mensagens: [...this.state.messages, msgObj],
+        mensagem: 'olá Liria'
+      });
+    });
+
+    // onSaveAluno(data)
   }
 
- /* async function onSaveAluno(data: AlunoType) {
-    const connection = await connectToDatabase();
 
+
+
+  useEffect(() => {
+    const p = new Peer({ trickle: false });
+
+    p.on('signal', (data) => {
+      console.log('Sinal enviado:', JSON.stringify(data));
+    });
+
+    p.on('connect', () => {
+      console.log('Conexão estabelecida');
+      p.send('Olá, outra aplicação!');
+    });
+
+
+    p.on('data', (mensagem) => {
+      console.log('Mensagem recebida:', mensagem.toString());
+      setPeer(mensagem.toString())
+      // Você pode definir o estado aqui para exibir a mensagem na renderização
+    });
+  }, []);
+
+  /* async function onSaveAluno(data: AlunoType) {
+     const connection = await connectToDatabase();
+ 
+    
+     const query = 'INSERT INTO table_aluno (nomeAluno, dataNascimento, morada, sexo) VALUES (?, ?, ?, ?)';
    
-    const query = 'INSERT INTO table_aluno (nomeAluno, dataNascimento, morada, sexo) VALUES (?, ?, ?, ?)';
-  
-    await connection.query(query, data);
-  } */
+     await connection.query(query, data);
+   } */
 
 
   return (
@@ -59,7 +94,7 @@ export const Helineth = () => {
         fontSize='28'
         textAlign={'center'}
       >
-        Adicionar Aluno
+        Adicionar Aluno {peer}
       </Heading>
 
       <Box>
@@ -130,7 +165,7 @@ export const Helineth = () => {
         >
           Sexo
         </FormLabel>
-        <Select 
+        <Select
           h='45px'
           fontSize='15px'
           outline='none'
